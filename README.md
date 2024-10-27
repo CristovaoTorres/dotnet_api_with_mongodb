@@ -1,7 +1,7 @@
 
 # DotNetExample_API
 
-Bem-vindo ao projeto **DotNetExample_API**! Este é um exemplo de API RESTful construído com ASP.NET Core e MongoDB. O objetivo deste projeto é fornecer uma base para novos programadores aprenderem a integrar uma API em .NET com o MongoDB, aplicando boas práticas de arquitetura, padronização de respostas, e injeção de dependências.
+Bem-vindo ao projeto **DotNetExample_API**! Este é um exemplo de API RESTful construído com ASP.NET Core e MongoDB. O objetivo deste projeto é fornecer uma base para novos programadores aprenderem a integrar uma API em .NET com o MongoDB, aplicando boas práticas de arquitetura, padronização de respostas e injeção de dependências.
 
 ---
 
@@ -12,7 +12,8 @@ Bem-vindo ao projeto **DotNetExample_API**! Este é um exemplo de API RESTful co
 3. [Como Executar o Projeto Localmente](#-como-executar-o-projeto-localmente)
 4. [Estrutura do Projeto](#-estrutura-do-projeto)
 5. [Padrão de Respostas da API](#-padrão-de-respostas-da-api)
-6. [Endpoints Disponíveis](#-endpoints-disponíveis)
+6. [Uso do BaseRepository para CRUD Genérico](#-uso-do-baserepository-para-crud-genérico)
+7. [Endpoints Disponíveis](#-endpoints-disponíveis)
 
 ---
 
@@ -139,6 +140,28 @@ Para garantir uma resposta consistente em todos os endpoints da API, usamos o pa
 - **Mensagens adicionais**: Informações auxiliares sobre o status da operação.
 
 O uso do `BaseResponse` torna o consumo da API mais previsível e facilita a integração com outras aplicações.
+
+---
+
+## ⚙️ Uso do BaseRepository para CRUD Genérico
+
+O projeto utiliza uma classe `BaseRepository<T>` para fornecer operações CRUD comuns para as entidades, simplificando o repositório de cada entidade específica. Essa abordagem permite que outros repositórios (como `ProductRepository`) herdem os métodos CRUD e apenas adicionem operações específicas, se necessário.
+
+### Classe BaseRepository
+
+A classe `BaseRepository<T>` fornece os métodos básicos de CRUD:
+
+- `GetAllAsync()`: Obtém todos os documentos.
+- `GetByIdAsync(id)`: Busca um documento pelo ID.
+- `CreateAsync(entity)`: Insere um novo documento.
+- `UpdateAsync(id, entity)`: Atualiza um documento existente.
+- `DeleteAsync(id)`: Exclui um documento.
+
+Essa classe é genérica, o que significa que pode ser reutilizada para várias entidades, reduzindo duplicação de código e facilitando a manutenção.
+
+### Exemplo de Repositório Específico
+
+`ProductRepository` é um exemplo de repositório que herda `BaseRepository<Product>`. Com essa herança, `ProductRepository` tem acesso imediato aos métodos CRUD, mas pode definir métodos adicionais específicos para `Product`, se necessário.
 
 ---
 
