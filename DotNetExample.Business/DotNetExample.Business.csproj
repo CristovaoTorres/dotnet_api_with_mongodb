@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetExample_API.Domain\DotNetExample_API.Domain.csproj" />
+    <ProjectReference Include="..\DotNetExample_API.Repository\DotNetExample_API.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

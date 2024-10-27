@@ -9,7 +9,7 @@ namespace DotNetExample_API.CrossCutting
         public static void AddDependencyInjection(this IServiceCollection services)
         {
             // Registrar as dependências globais
-            services.AddScoped<IProdutoBusiness, ProdutoBusiness>();
+            services.AddScoped<IProductBusiness, ProductBusiness>();
             services.AddSingleton<ProductRepository, ProductRepository>();
             // Outras configurações de dependências
         }
