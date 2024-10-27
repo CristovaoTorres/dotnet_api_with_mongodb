@@ -1,7 +1,7 @@
 
 # DotNetExample_API
 
-Bem-vindo ao projeto **DotNetExample_API**! Este é um exemplo de API RESTful construído com ASP.NET Core e MongoDB. O objetivo deste projeto é fornecer uma base para novos programadores aprenderem a integrar uma API em .NET com o MongoDB, aplicando boas práticas de arquitetura e injeção de dependências.
+Bem-vindo ao projeto **DotNetExample_API**! Este é um exemplo de API RESTful construído com ASP.NET Core e MongoDB. O objetivo deste projeto é fornecer uma base para novos programadores aprenderem a integrar uma API em .NET com o MongoDB, aplicando boas práticas de arquitetura, padronização de respostas, e injeção de dependências.
 
 ---
 
@@ -11,7 +11,8 @@ Bem-vindo ao projeto **DotNetExample_API**! Este é um exemplo de API RESTful co
 2. [Configuração do MongoDB Localmente](#-configuração-do-mongodb-localmente)
 3. [Como Executar o Projeto Localmente](#-como-executar-o-projeto-localmente)
 4. [Estrutura do Projeto](#-estrutura-do-projeto)
-5. [Endpoints Disponíveis](#-endpoints-disponíveis)
+5. [Padrão de Respostas da API](#-padrão-de-respostas-da-api)
+6. [Endpoints Disponíveis](#-endpoints-disponíveis)
 
 ---
 
@@ -129,6 +130,18 @@ DotNetExample_API
 
 ---
 
+## 📦 Padrão de Respostas da API
+
+Para garantir uma resposta consistente em todos os endpoints da API, usamos o padrão `BaseResponse`. Esse padrão facilita o tratamento de erros, validações e informações adicionais. Todas as respostas são padronizadas para retornar uma estrutura unificada, que inclui:
+
+- **Dados (Data)**: O conteúdo retornado pela operação.
+- **Erros (Errors)**: Uma lista de erros, caso a operação não seja bem-sucedida.
+- **Mensagens adicionais**: Informações auxiliares sobre o status da operação.
+
+O uso do `BaseResponse` torna o consumo da API mais previsível e facilita a integração com outras aplicações.
+
+---
+
 ## 📋 Endpoints Disponíveis
 
 Aqui estão os principais endpoints disponíveis na API:
@@ -155,9 +168,9 @@ Retorna os detalhes de um produto específico.
 Body:
 ```json
 {
-  "name": "Produto1",
-  "price": 10,
-  "quantity": 1
+  "name": "string",
+  "price": 0.0,
+  "quantity": 0
 }
 ```
 
@@ -173,9 +186,9 @@ Parâmetros:
 Body:
 ```json
 {
-  "name": "Produto1",
-  "price": 10,
-  "quantity": 1
+  "name": "string",
+  "price": 0.0,
+  "quantity": 0
 }
 ```
 
