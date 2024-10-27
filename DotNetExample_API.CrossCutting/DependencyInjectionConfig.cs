@@ -1,4 +1,5 @@
 ﻿using DotNetExample.Business;
+using DotNetExample_API.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetExample_API.CrossCutting
@@ -9,7 +10,7 @@ namespace DotNetExample_API.CrossCutting
         {
             // Registrar as dependências globais
             services.AddScoped<IProdutoBusiness, ProdutoBusiness>();
-            services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<ProductRepository, ProductRepository>();
             // Outras configurações de dependências
         }
     }
