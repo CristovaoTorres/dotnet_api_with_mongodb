@@ -1,49 +1,20 @@
 ﻿using DotNetExample_API.Domain;
-using MongoDB.Driver;
 
 namespace DotNetExample_API.Repository
 {
-    public interface IProductRepository
+    public interface IProductRepository : IBaseRepository<Product>
     {
-        Task<IEnumerable<Product>> GetAllAsync();
-        Task<Product> GetByIdAsync(string id);
-        Task CreateAsync(Product product);
-        Task UpdateAsync(string id, Product product);
-        Task DeleteAsync(string id);
+        // Adicione métodos específicos de Product, se necessário
     }
 
-    public class ProductRepository : IProductRepository
+    // Repositório específico para a entidade Product, herdando métodos CRUD da BaseRepository
+    public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
-        private readonly IMongoCollection<Product> _products;
-
         public ProductRepository(MongoDbContext context)
+            : base(context, "Products") // Define o nome da coleção específica
         {
-            _products = context.GetCollection<Product>("Products"); // Nome da coleção
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
-        {
-            return await _products.Find(product => true).ToListAsync();
-        }
-
-        public async Task<Product> GetByIdAsync(string id)
-        {
-            return await _products.Find(product => product.Id == id).FirstOrDefaultAsync();
-        }
-
-        public async Task CreateAsync(Product product)
-        {
-            await _products.InsertOneAsync(product);
-        }
-
-        public async Task UpdateAsync(string id, Product product)
-        {
-            await _products.ReplaceOneAsync(prod => prod.Id == id, product);
-        }
-
-        public async Task DeleteAsync(string id)
-        {
-            await _products.DeleteOneAsync(product => product.Id == id);
-        }
+        // Métodos específicos de Product podem ser adicionados aqui, se necessário
     }
 }
