@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetExample.Business\DotNetExample.Business.csproj" />
+    <ProjectReference Include="..\DotNetExample_API.CrossCutting\DotNetExample_API.CrossCutting.csproj" />
+  </ItemGroup>
+
 </Project>

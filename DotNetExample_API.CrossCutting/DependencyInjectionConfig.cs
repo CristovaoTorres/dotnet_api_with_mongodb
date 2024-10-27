@@ -8,9 +8,16 @@ namespace DotNetExample_API.CrossCutting
     {
         public static void AddDependencyInjection(this IServiceCollection services)
         {
+            services.AddSingleton<MongoDbContext>(provider =>
+            {
+                var connectionString = "mongodb://localhost:27017"; // Use sua string de conexão real
+                var databaseName = "mongo"; // Use o nome do seu banco de dados
+                return new MongoDbContext(connectionString, databaseName);
+            });
+
             // Registrar as dependências globais
             services.AddScoped<IProductBusiness, ProductBusiness>();
-            services.AddSingleton<ProductRepository, ProductRepository>();
+            services.AddSingleton<IProductRepository, ProductRepository>();
             // Outras configurações de dependências
         }
     }

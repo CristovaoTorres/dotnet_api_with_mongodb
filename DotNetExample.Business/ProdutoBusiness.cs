@@ -1,4 +1,5 @@
 ﻿using DotNetExample_API.Domain;
+using DotNetExample_API.Domain.Request;
 using DotNetExample_API.Repository;
 
 namespace DotNetExample.Business
@@ -7,9 +8,9 @@ namespace DotNetExample.Business
     {
         Task<BaseResponse> GetAllAsync();
         Task<BaseResponse> GetByIdAsync(string id);
-        Task<BaseResponse> CreateAsync(Product product);
-        Task<BaseResponse> UpdateAsync(string id, Product product);
-        Task<BaseResponse> DeleteAsync(string id);
+        Task<BaseResponse> CreateAsync(ProductCreateRequest model);
+        Task<BaseResponse> UpdateAsync(ProductUpdateRequest model);
+        Task<BaseResponse> DeleteAsync(ProductDeleteRequest model);
     }
 
     public class ProductBusiness : IProductBusiness
@@ -46,21 +47,25 @@ namespace DotNetExample.Business
             response.AddData(product);
             return response;
         }
-        public async Task<BaseResponse> CreateAsync(Product product)
+        public async Task<BaseResponse> CreateAsync(ProductCreateRequest model)
         {
             var response = new BaseResponse();
 
-
             // Exemplo de regra de negócio: validar preço
-            if (product.Price <= 0)
-                throw new ArgumentException("O preço do produto deve ser maior que zero.");
+            if (model.Price <= 0)
+            {
+                response.AddError(new ValidationError { ErrorMessage = "O preço do produto deve ser maior que zero.", Field = "Price" });
+                return response;
+            }
 
             // Exemplo de outra validação
-            if (string.IsNullOrEmpty(product.Name))
+            if (string.IsNullOrEmpty(model.Name))
             {
                 response.AddError(new ValidationError { ErrorMessage = "O nome do produto é obrigatório.", Field = "Name" });
                 return response;
             }
+
+            var product = model.MapToCreate();
 
             await _productRepository.CreateAsync(product);
 
@@ -68,45 +73,46 @@ namespace DotNetExample.Business
             return response;
         }
 
-        public async Task<BaseResponse> UpdateAsync(string id, Product product)
+        public async Task<BaseResponse> UpdateAsync(ProductUpdateRequest model)
         {
             var response = new BaseResponse();
 
             // Verifica se o produto existe antes de atualizar
-            var existingProduct = await _productRepository.GetByIdAsync(id);
+            var existingProduct = await _productRepository.GetByIdAsync(model.Id);
             if (existingProduct == null)
             {
                 response.AddError(new ValidationError { ErrorMessage = "Produto não encontrado para atualização.", Field = "id" });
                 return response;
             }
 
-
             // Exemplo de validação adicional
-            if (product.Price <= 0)
+            if (model.Price <= 0)
             {
                 response.AddError(new ValidationError { ErrorMessage = "O preço do produto deve ser maior que zero.", Field = "id" });
                 return response;
             }
 
-            await _productRepository.UpdateAsync(id, product);
+            var product = model.MapToUpdate();
+
+            await _productRepository.UpdateAsync(model.Id, product);
             response.AddData(product);
             return response;
         }
 
-        public async Task<BaseResponse> DeleteAsync(string id)
+        public async Task<BaseResponse> DeleteAsync(ProductDeleteRequest model)
         {
             var response = new BaseResponse();
 
 
             // Verifica se o produto existe antes de excluir
-            var existingProduct = await _productRepository.GetByIdAsync(id);
+            var existingProduct = await _productRepository.GetByIdAsync(model.Id);
             if (existingProduct == null)
             {
                 response.AddError(new ValidationError { ErrorMessage = "Produto não encontrado para exclusão", Field = "Id" });
                 return response;
             }
 
-            await _productRepository.DeleteAsync(id);
+            await _productRepository.DeleteAsync(model.Id);
 
             return response;
         }
